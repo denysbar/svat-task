@@ -9,7 +9,7 @@ class DemoApplicationTests {
 
     @Test
     void contextLoads() {
-        var re = new PerformanceService().runPerformance(100);
+        var re = new PerformanceService().runPerformance(100000);
         System.out.println(re);
     }
 

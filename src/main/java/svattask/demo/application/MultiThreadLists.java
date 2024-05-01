@@ -15,7 +15,7 @@ public class MultiThreadLists extends Thread {
 
     private final List<String> list;
 
-    private Map<String, Map<CrudMethods, OperationMetricsDto>> details  = new HashMap<>();
+    private Map<String, Map<CrudMethods, OperationMetricsDto>> details = new HashMap<>();
 
     public MultiThreadLists(List<String> list, long size) {
         this.size = size;
