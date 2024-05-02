@@ -1,11 +1,9 @@
-package svattask.demo;
+package svattask.demo.testing;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import svattask.demo.application.PerformanceService;
-
-import java.util.concurrent.ExecutionException;
 
 @SpringBootTest
 class DemoApplicationTests {
@@ -20,7 +18,7 @@ class DemoApplicationTests {
     private PerformanceService performanceService;
 
     @Test
-    void contextLoads2() throws ExecutionException, InterruptedException {
+    void contextLoads2() {
         var re = performanceService.runPerformance(100000);
         System.out.println(re);
     }

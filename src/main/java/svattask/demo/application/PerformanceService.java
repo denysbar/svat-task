@@ -1,11 +1,15 @@
 package svattask.demo.application;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import svattask.demo.domain.MeasurementsEntity;
+import svattask.demo.domain.MeasurementsRepository;
 import svattask.demo.dto.OperationMetricsDto;
 import svattask.demo.dto.OverallComparisonDto;
 import svattask.demo.dto.PerformanceResultDto;
 import svattask.demo.enums.CrudMethods;
 
+import java.sql.Timestamp;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -19,6 +23,9 @@ import java.util.concurrent.atomic.AtomicReference;
 
 @Service
 public class PerformanceService {
+
+    @Autowired
+    private MeasurementsRepository measurementsRepository;
 
     public PerformanceResultDto runPerformance(long listSize) {
         // Start CompletableFuture tasks asynchronously
@@ -48,7 +55,7 @@ public class PerformanceService {
     private CompletableFuture<Map<String, Map<CrudMethods, OperationMetricsDto>>> collectStatistics(
             List<String> list, long size
     ) {
-        AtomicReference<List<String>> list2 = new AtomicReference<>(list);
+        AtomicReference<List<String>> atomicList = new AtomicReference<>(list);
         Map<String, Map<CrudMethods, OperationMetricsDto>> details = new HashMap<>();
         Map<CrudMethods, OperationMetricsDto> map = new HashMap<>();
         return CompletableFuture.supplyAsync(() -> {
@@ -57,7 +64,7 @@ public class PerformanceService {
                         var operationMetrics = new OperationMetricsDto();
                         for (int i = 0; i < size; i++) {
                             Instant start = Instant.now();
-                            list2.set(listModification(list2.get(), method));
+                            atomicList.set(listModification(atomicList.get(), method));
                             Instant end = Instant.now();
                             long executionTime = Duration.between(start, end).getNano();
                             if (i == 0) {
@@ -70,10 +77,11 @@ public class PerformanceService {
                                 operationMetrics.setEnd(executionTime);
                             }
                         }
-
                         map.put(method, operationMetrics);
                         details.put(list.getClass().getSimpleName(), map);
+                        saveRecord(list.getClass().getSimpleName(), method, operationMetrics);
                     });
+            measurementsRepository.flush();
             return details;
         });
 
@@ -112,6 +120,19 @@ public class PerformanceService {
             sum += operationMetricsDto.getStart() + operationMetricsDto.getEnd() + operationMetricsDto.getMiddle();
         }
         return sum / 12;
+    }
+
+    private void saveRecord(String listType, CrudMethods method, OperationMetricsDto metrics) {
+        measurementsRepository.save(
+                MeasurementsEntity.builder()
+                        .listType(listType)
+                        .method(method.toString())
+                        .start(metrics.getStart())
+                        .middle(metrics.getMiddle())
+                        .ending(metrics.getEnd())
+                        .timestamp(Timestamp.from(Instant.now()))
+                        .build()
+        );
     }
 
 }
