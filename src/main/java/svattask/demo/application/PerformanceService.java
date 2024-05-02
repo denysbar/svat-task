@@ -1,7 +1,10 @@
 package svattask.demo.application;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
+import svattask.demo.application.kafka.KafkaProducer;
 import svattask.demo.domain.MeasurementsEntity;
 import svattask.demo.domain.MeasurementsRepository;
 import svattask.demo.dto.OperationMetricsDto;
@@ -26,6 +29,10 @@ public class PerformanceService {
 
     @Autowired
     private MeasurementsRepository measurementsRepository;
+    @Autowired
+    private KafkaProducer kafkaProducer;
+    @Value("${kafka.topic.performance.result}")
+    private String kafkaTopic;
 
     public PerformanceResultDto runPerformance(long listSize) {
         // Start CompletableFuture tasks asynchronously
@@ -39,7 +46,7 @@ public class PerformanceService {
         CompletableFuture.allOf(threads.toArray(new CompletableFuture[0])).join();
 
         // Return the results
-        return mergeMeasuringResults(threads.stream()
+        var result = mergeMeasuringResults(threads.stream()
                 .map(x -> {
                     try {
                         return x.get();
@@ -50,6 +57,8 @@ public class PerformanceService {
                     }
                 }).toList()
         );
+//        kafkaProducer.sendMessage(kafkaTopic, result.convertDtoToJson());
+        return result;
     }
 
     private CompletableFuture<Map<String, Map<CrudMethods, OperationMetricsDto>>> collectStatistics(

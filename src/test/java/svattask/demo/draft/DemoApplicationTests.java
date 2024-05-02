@@ -1,4 +1,4 @@
-package svattask.demo.testing;
+package svattask.demo.draft;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
