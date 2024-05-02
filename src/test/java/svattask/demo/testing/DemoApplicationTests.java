@@ -8,12 +8,6 @@ import svattask.demo.application.PerformanceService;
 @SpringBootTest
 class DemoApplicationTests {
 
-    @Test
-    void contextLoads() {
-        var re = new PerformanceService().runPerformance(100000);
-        System.out.println(re);
-    }
-
     @Autowired
     private PerformanceService performanceService;
 

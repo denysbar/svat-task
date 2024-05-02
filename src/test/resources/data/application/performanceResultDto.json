@@ -1,0 +1,59 @@
+{
+  "details": [
+    {
+      "ArrayList": {
+        "READ": {
+          "start": 26000,
+          "middle": 0,
+          "end": 0
+        },
+        "DELETE": {
+          "start": 29000,
+          "middle": 0,
+          "end": 0
+        },
+        "CREATE": {
+          "start": 236000,
+          "middle": 3000,
+          "end": 6000
+        },
+        "UPDATE": {
+          "start": 18000,
+          "middle": 0,
+          "end": 0
+        }
+      }
+    },
+    {
+      "LinkedList": {
+        "READ": {
+          "start": 14000,
+          "middle": 0,
+          "end": 0
+        },
+        "DELETE": {
+          "start": 31000,
+          "middle": 0,
+          "end": 0
+        },
+        "CREATE": {
+          "start": 132000,
+          "middle": 0,
+          "end": 0
+        },
+        "UPDATE": {
+          "start": 26000,
+          "middle": 0,
+          "end": 0
+        }
+      }
+    }
+  ],
+  "overallComparison": {
+    "averageTime": {
+      "ArrayList": 26500,
+      "LinkedList": 16916
+    },
+    "recommendation": "I don't know. Ask ChatGPT."
+  }
+}
