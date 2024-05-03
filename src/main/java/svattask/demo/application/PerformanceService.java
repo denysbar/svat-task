@@ -1,8 +1,7 @@
 package svattask.demo.application;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import svattask.demo.application.kafka.KafkaProducer;
 import svattask.demo.domain.MeasurementsEntity;
@@ -25,12 +24,13 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.AtomicReference;
 
 @Service
+@RequiredArgsConstructor
 public class PerformanceService {
 
-    @Autowired
-    private MeasurementsRepository measurementsRepository;
-    @Autowired
-    private KafkaProducer kafkaProducer;
+    private final MeasurementsRepository measurementsRepository;
+
+    private final KafkaProducer kafkaProducer;
+
     @Value("${kafka.topic.performance.result}")
     private String kafkaTopic;
 
@@ -57,7 +57,7 @@ public class PerformanceService {
                     }
                 }).toList()
         );
-//        kafkaProducer.sendMessage(kafkaTopic, result.convertDtoToJson());
+        //        kafkaProducer.sendMessage(kafkaTopic, result.convertDtoToJson());
         return result;
     }
 
