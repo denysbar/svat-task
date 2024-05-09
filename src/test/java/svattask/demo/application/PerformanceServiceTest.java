@@ -2,6 +2,7 @@ package svattask.demo.application;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import svattask.demo.domain.MeasurementsRepository;
@@ -14,7 +15,7 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 public class PerformanceServiceTest {
 
-    @Mock
+    @InjectMocks
     private PerformanceService service;
 
     @Mock
