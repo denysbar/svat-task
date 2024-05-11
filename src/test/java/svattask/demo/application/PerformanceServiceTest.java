@@ -23,11 +23,11 @@ public class PerformanceServiceTest {
 
     @Test
     public void testDataSavedInDb() {
-        when(measurementsRepository.save(any())).thenReturn(any());
+        when(measurementsRepository.save(any())).thenReturn(null);
 
         service.runPerformance(10);
 
-        verify(measurementsRepository, times(1)).save(any());
+        verify(measurementsRepository, times(8)).save(any());
     }
 
 }
