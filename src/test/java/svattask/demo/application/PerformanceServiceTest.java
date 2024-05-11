@@ -2,6 +2,7 @@ package svattask.demo.application;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import svattask.demo.domain.MeasurementsRepository;
@@ -14,7 +15,7 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 public class PerformanceServiceTest {
 
-    @Mock
+    @InjectMocks
     private PerformanceService service;
 
     @Mock
@@ -22,11 +23,11 @@ public class PerformanceServiceTest {
 
     @Test
     public void testDataSavedInDb() {
-        when(measurementsRepository.save(any())).thenReturn(any());
+        when(measurementsRepository.save(any())).thenReturn(null);
 
         service.runPerformance(10);
 
-        verify(measurementsRepository, times(1)).save(any());
+        verify(measurementsRepository, times(8)).save(any());
     }
 
 }
