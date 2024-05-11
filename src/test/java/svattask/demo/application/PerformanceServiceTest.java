@@ -5,6 +5,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import svattask.demo.domain.MeasurementsEntity;
 import svattask.demo.domain.MeasurementsRepository;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -23,7 +24,7 @@ public class PerformanceServiceTest {
 
     @Test
     public void testDataSavedInDb() {
-        when(measurementsRepository.save(any())).thenReturn(null);
+        when(measurementsRepository.save(any())).thenReturn(new MeasurementsEntity());
 
         service.runPerformance(10);
 
